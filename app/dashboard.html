@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/all.min.css">
+
+    <style>
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #1a1d20;
+            color: #e4e6eb;
+        }
+        
+        .dark-mode .bg-light {
+            background-color: #242526 !important;
+            color: #e4e6eb !important;
+        }
+
+        .dark-mode .bg-secondary {
+            background-color: #18191a !important;
+        }
+
+        .dark-mode .card {
+            background-color: #242526;
+            border-color: #393a3b;
+        }
+
+        .dark-mode .card-header {
+            background-color: #2e2f30;
+            border-bottom-color: #393a3b;
+            color: #e4e6eb;
+        }
+
+        /* Remove custom table styles as we'll use Bootstrap's table-dark */
+
+        .dark-mode .text-primary {
+            color: #4e89e8 !important;
+        }
+
+        .dark-mode .nav-link {
+            color: #e4e6eb;
+        }
+
+        .dark-mode .nav-link:hover {
+            color: #4e89e8;
+        }
+
+        .dark-mode .list-group-item {
+            background-color: #242526;
+            border-color: #393a3b;
+            color: #e4e6eb;
+        }
+
+        .dark-mode .list-group-item.active {
+            background-color: #4e89e8;
+            border-color: #4e89e8;
+        }
+
+        .dark-mode .alert-info {
+            background-color: #1c2c3f;
+            border-color: #1a3c61;
+            color: #9bbdec;
+        }
+
+        .dark-mode .navbar {
+            border-bottom: 1px solid #393a3b;
+        }
+
+        .dark-mode .dropdown-menu {
+            background-color: #242526;
+            border-color: #393a3b;
+        }
+
+        .dark-mode .dropdown-item {
+            color: #e4e6eb;
+        }
+
+        .dark-mode .dropdown-item:hover {
+            background-color: #2e2f30;
+            color: #e4e6eb;
+        }
+    </style>
+
+    <script src="js/bootstrap.bundle.min.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for saved theme preference
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            const tables = document.querySelectorAll('.table');
+            
+            // Function to update table classes
+            function updateTableTheme(isDark) {
+                tables.forEach(table => {
+                    if (isDark) {
+                        table.classList.add('table-dark');
+                    } else {
+                        table.classList.remove('table-dark');
+                    }
+                });
+            }
+
+            // Apply saved theme
+            if (darkMode) {
+                body.classList.add('dark-mode');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                updateTableTheme(true);
+            }
+
+            // Theme toggle function
+            window.toggleTheme = function() {
+                body.classList.toggle('dark-mode');
+                const isDarkMode = body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDarkMode);
+                
+                // Toggle icon and update tables
+                if (isDarkMode) {
+                    themeIcon.classList.replace('fa-moon', 'fa-sun');
+                    updateTableTheme(true);
+                } else {
+                    themeIcon.classList.replace('fa-sun', 'fa-moon');
+                    updateTableTheme(false);
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row g-0">
+            <div class="col-2 bg-light">
+                <h1 class="h3 text-center text-primary py-3">
+                    <i class="fa-solid fa-ghost"></i>
+                    <span class="ms-2 d-none d-lg-inline">App</span>
+                </h1>
+                <ul class="list-group mb-4 text-center text-lg-start">
+                    <li class="list-group-item active">
+                        <i class="fa-solid fa-home"></i>
+                        <span class="ms-1 d-none d-lg-inline">Home</span>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa-solid fa-users"></i>
+                        <span class="ms-1 d-none d-lg-inline">Users</span>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa-solid fa-flag"></i>
+                        <span class="ms-1 d-none d-lg-inline">Issues</span>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa-solid fa-cog"></i>
+                        <span class="ms-1 d-none d-lg-inline">Settings</span>
+                    </li>
+                </ul>
+                <ul class="list-group mb-4 text-center text-lg-start">
+                    <li class="list-group-item">
+                        <i class="fa-solid fa-home"></i>
+                        <span class="ms-1 d-none d-lg-inline">Home</span>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa-solid fa-users"></i>
+                        <span class="ms-1 d-none d-lg-inline">Users</span>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa-solid fa-flag"></i>
+                        <span class="ms-1 d-none d-lg-inline">Issues</span>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa-solid fa-cog"></i>
+                        <span class="ms-1 d-none d-lg-inline">Settings</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-10 bg-secondary">
+                <nav class="navbar navbar-expand bg-light">
+                    <div class="container-fluid">
+                        <div></div>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <button class="nav-link border-0 bg-transparent" onclick="toggleTheme()">
+                                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                                </button>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="fa-solid fa-user-circle"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fa-solid fa-user me-1"></i>
+                                        Profile
+                                    </a>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fa-solid fa-sign-out me-1"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <div class="container-fluid p-3">
+                    <div class="alert alert-info">
+                        <i class="fa-solid fa-download me-2"></i>
+                        A new version available
+                    </div>
+                    <div class="row flex-column flex-lg-row">
+                        <div class="col mb-3">
+                            <div class="p-4 bg-light">
+                                <h3>1,024</h3>
+                                <span class="text-success">
+                                    <i class="fa-solid fa-chart-line me-2"></i>
+                                    Daily Users
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col mb-3">
+                            <div class="p-4 bg-light">
+                                <h3>7,024</h3>
+                                <span class="text-success">
+                                    <i class="fa-solid fa-chart-line me-2"></i>
+                                    Weekly Users
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col mb-3">
+                            <div class="p-4 bg-light">
+                                <h3>30,024</h3>
+                                <span class="text-success">
+                                    <i class="fa-solid fa-chart-line me-2"></i>
+                                    Monthly Users
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col mb-3">
+                            <div class="p-4 bg-light">
+                                <h3>211,024</h3>
+                                <span class="text-success">
+                                    <i class="fa-solid fa-chart-line me-2"></i>
+                                    Yearly Users
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location Section -->
+                    <div class="row mb-4">
+                        <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">LOCATION</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Regional</span>
+                                            <span>15%</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" style="width: 15%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Global</span>
+                                            <span>45%</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-primary" style="width: 45%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Local</span>
+                                            <span>30%</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-warning" style="width: 30%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Internal</span>
+                                            <span>10%</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-danger" style="width: 10%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Data Section -->
+                        <div class="col-12 col-lg-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">DATA</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Age Group</th>
+                                                    <th>Data</th>
+                                                    <th>Progress</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>20-30</td>
+                                                    <td>19%</td>
+                                                    <td><i class="fa-solid fa-chart-pie"></i></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>30-40</td>
+                                                    <td>40%</td>
+                                                    <td><i class="fa-solid fa-chart-line"></i></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>40-50</td>
+                                                    <td>20%</td>
+                                                    <td><i class="fa-solid fa-chart-bar"></i></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td>>50</td>
+                                                    <td>11%</td>
+                                                    <td><i class="fa-solid fa-chart-pie"></i></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
