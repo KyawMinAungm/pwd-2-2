@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 
 import {
 	Container,
@@ -10,17 +10,23 @@ import {
 
 import { Add as AddIcon } from "@mui/icons-material";
 
+import { useQuery } from "@tanstack/react-query";
+
 import Item from "./Item";
 import Header from "./Header";
+
+const api = "http://localhost:8800/items";
 
 export default function App() {
 	const inputRef = useRef();
 
-	const [data, setData] = useState([
-		{ id: 3, name: "Egg", done: true },
-		{ id: 2, name: "Bread", done: false },
-		{ id: 1, name: "Butter", done: false },
-	]);
+    const { data, error, isLoading } = useQuery({
+        queryKey: ["items"],
+        queryFn: async () => {
+            const res = await fetch(api);
+            return res.json();
+        }
+    });
 
 	const add = () => {
 		const id = data[0].id + 1;
@@ -42,6 +48,14 @@ export default function App() {
 			})
 		);
 	};
+
+    if(isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if(error) {
+        return <div>Unable to fetch API</div>;
+    }
 
 	return (
 		<div>
@@ -67,6 +81,7 @@ export default function App() {
 						}
 					/>
 				</form>
+
 				<List>
 					{data
 						.filter(item => !item.done)

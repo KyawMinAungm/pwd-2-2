@@ -3,12 +3,16 @@ const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
 async function read() {
-    const role = await prisma.role.findFirst({
-        where: { id: 2 },
+    const roles = await prisma.role.findMany({
         include: { users: true },
     });
 
-    console.log(role);
+    const user = await prisma.user.findFirst({
+        where: { id: 1 },
+        include: { role: true },
+    });
+
+    console.log(roles, user);
 }
 
 read();
