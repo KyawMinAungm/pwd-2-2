@@ -12,9 +12,7 @@ app.use(express.urlencoded());
 
 app.get("/items", async (req, res) => {
 	const items = await prisma.item.findMany();
-	setTimeout(() => {
-        res.send(items);
-    }, 2000);
+	res.send(items);
 });
 
 app.get("/items/:id", async (req, res) => {
@@ -56,6 +54,15 @@ app.put("/items/:id/toggle", async (req, res) => {
 	});
 
 	res.json(update);
+});
+
+app.delete("/items/:id", async (req, res) => {
+    const id = req.params.id;
+    const item = await prisma.item.delete({
+        where: { id: Number(id) },
+    });
+
+    res.json(item);
 });
 
 app.listen(8800, () => {

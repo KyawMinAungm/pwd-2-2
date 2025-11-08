@@ -10,7 +10,7 @@ import {
 
 import { Add as AddIcon } from "@mui/icons-material";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import Item from "./Item";
 import Header from "./Header";
@@ -19,43 +19,48 @@ const api = "http://localhost:8800/items";
 
 export default function App() {
 	const inputRef = useRef();
+	const queryClient = useQueryClient();
 
-    const { data, error, isLoading } = useQuery({
-        queryKey: ["items"],
-        queryFn: async () => {
-            const res = await fetch(api);
-            return res.json();
-        }
-    });
+	const { data, error, isLoading } = useQuery({
+		queryKey: ["items"],
+		queryFn: async () => {
+			const res = await fetch(api);
+			return res.json();
+		},
+	});
 
-	const add = () => {
-		const id = data[0].id + 1;
+	const add = async () => {
 		const name = inputRef.current.value;
 		if (name == "") return false;
 
-		setData([{ id, name, done: false }, ...data]);
+		await fetch(api, {
+			method: "POST",
+			body: JSON.stringify({ name }),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+
+		queryClient.invalidateQueries(["items"]);
 	};
 
-	const del = id => {
-		setData(data.filter(item => item.id !== id));
+	const del = async id => {
+		await fetch(`${api}/${id}`, { method: "DELETE" });
+		queryClient.invalidateQueries(["items"]);
 	};
 
-	const toggle = id => {
-		setData(
-			data.map(item => {
-				if (item.id === id) item.done = !item.done;
-				return item;
-			})
-		);
+	const toggle = async id => {
+		await fetch(`${api}/${id}/toggle`, { method: "PUT" });
+		queryClient.invalidateQueries(["items"]);
 	};
 
-    if(isLoading) {
-        return <div>Loading...</div>;
-    }
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
 
-    if(error) {
-        return <div>Unable to fetch API</div>;
-    }
+	if (error) {
+		return <div>Unable to fetch API</div>;
+	}
 
 	return (
 		<div>
