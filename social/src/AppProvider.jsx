@@ -44,6 +44,7 @@ let router = createBrowserRouter([
 export default function AppProvider() {
 	const [mode, setMode] = useState("dark");
     const [openDrawer, setOpenDrawer] = useState(false);
+    const [auth, setAuth] = useState();
 
 	const theme = useMemo(() => {
 		console.log("running create theme function");
@@ -56,7 +57,7 @@ export default function AppProvider() {
 
 	return (
 		<AppContext.Provider
-			value={{ mode, setMode, openDrawer, setOpenDrawer }}>
+			value={{ mode, setMode, openDrawer, setOpenDrawer, auth, setAuth }}>
 			<ThemeProvider theme={theme}>
 				<QueryClientProvider client={queryClient}>
 					<RouterProvider router={router} />
