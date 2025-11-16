@@ -44,7 +44,10 @@ export default function AppDrawer() {
 							</ListItemButton>
 						</ListItem>
 						<ListItem>
-							<ListItemButton onClick={() => setAuth(undefined)}>
+							<ListItemButton onClick={() => {
+                                setAuth(undefined);
+                                localStorage.removeItem("token");
+                            }}>
 								<ListItemIcon>
 									<LogoutIcon />
 								</ListItemIcon>

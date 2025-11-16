@@ -17,6 +17,14 @@ router.get("/", auth, async (req, res) => {
     res.json(users);
 });
 
+router.get("/verify", auth, async (req, res) => {
+    const user = await prisma.user.findFirst({
+        where: { id: req.user.id },
+    })
+
+    res.json(user);
+});
+
 router.post("/", async (req, res) => {
     const name = req.body?.name;
     const username = req.body?.username;

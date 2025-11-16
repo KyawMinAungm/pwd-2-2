@@ -6,7 +6,7 @@ import {
 	Typography,
 	IconButton,
 	ButtonGroup,
-    Button,
+	Button,
 } from "@mui/material";
 import { green } from "@mui/material/colors";
 
@@ -16,24 +16,24 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 
-export default function Post() {
-    const navigate = useNavigate();
+export default function Post({ post }) {
+	const navigate = useNavigate();
 
 	return (
 		<Card sx={{ mb: 2 }}>
 			<CardContent sx={{ display: "flex", gap: 2 }}>
 				<Avatar sx={{ background: green[500], width: 64, height: 64 }}>
-					A
+					{post.user.name[0]}
 				</Avatar>
 				<Box>
-					<Typography>Alice</Typography>
+					<Typography>{post.user.name}</Typography>
 					<Typography sx={{ fontSize: 12, color: green[500] }}>
 						a few minutes ago
 					</Typography>
-					<Typography sx={{ mt: 1 }} onClick={() => navigate("/show/123")}>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Repudiandae eos laudantium similique vitae, voluptas at
-						dicta sit, officiis commodi.
+					<Typography
+						sx={{ mt: 1 }}
+						onClick={() => navigate(`/show/${post.id}`)}>
+						{post.content}
 					</Typography>
 					<Box
 						sx={{
@@ -58,7 +58,7 @@ export default function Post() {
 							<Button
 								size="sm"
 								variant="text">
-								5
+								{post.comments ? post.comments.length : 0}
 							</Button>
 						</ButtonGroup>
 					</Box>
