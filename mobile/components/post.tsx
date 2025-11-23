@@ -1,14 +1,15 @@
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { PostType } from "@/types/global";
 
-export default function Post() {
+export default function Post({ post }: { post: PostType }) {
 	return (
 		<View style={styles.card}>
 			<View style={styles.cardContent}>
 				<View style={styles.avatar}></View>
 				<View style={{ flexShrink: 1 }}>
 					<View>
-						<Text style={{ fontSize: 21 }}>Alice</Text>
+						<Text style={{ fontSize: 21 }}>{post.user.name}</Text>
 					</View>
 					<View>
 						<Text style={{ color: "green" }}>
@@ -17,9 +18,7 @@ export default function Post() {
 					</View>
 					<View style={{ marginTop: 5 }}>
 						<Text style={{ fontSize: 16 }}>
-							Lorem ipsum, dolor sit amet consectetur adipisicing
-							elit. Quisquam culpa cupiditate magni? Ipsam iusto
-							rem, iste.
+							{post.content}
 						</Text>
 					</View>
 				</View>
@@ -37,8 +36,8 @@ export default function Post() {
 						alignItems: "center",
 					}}>
 					<TouchableOpacity>
-						<MaterialIcons
-							name="favorite-outline"
+						<Ionicons
+							name="heart-outline"
 							color="red"
 							size={28}
 						/>
@@ -54,14 +53,14 @@ export default function Post() {
 						alignItems: "center",
 					}}>
 					<TouchableOpacity>
-						<MaterialIcons
-							name="chat-bubble"
+						<Ionicons
+							name="chatbubbles"
 							color="green"
 							size={28}
 						/>
 					</TouchableOpacity>
 					<TouchableOpacity>
-						<Text>10</Text>
+						<Text>{post.comments.length}</Text>
 					</TouchableOpacity>
 				</View>
 			</View>

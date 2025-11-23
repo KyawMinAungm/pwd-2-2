@@ -1,19 +1,19 @@
-type User = {
+export type UserType = {
     id: number;
     name: string;
     username: string;
     bio?: string;
 }
 
-type Comment = {
+export type CommentType = {
     id: number;
     content: string;
-    user: User;
+    user: UserType;
 }
 
-type Post = {
+export type PostType = {
     id: number;
     content: string;
-    user: User;
-    comments: Comment[];
+    user: UserType;
+    comments: CommentType[];
 }

@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function HomeLayout() {
 	return (
@@ -9,8 +9,8 @@ export default function HomeLayout() {
 				options={{
 					title: "Home",
 					tabBarIcon: ({ color }) => (
-						<MaterialIcons
-							name="home"
+						<Ionicons
+							name="home-outline"
 							color={color}
 							size={24}
 						/>
@@ -22,8 +22,8 @@ export default function HomeLayout() {
 				options={{
 					title: "Profile",
 					tabBarIcon: ({ color }) => (
-						<MaterialIcons
-							name="person"
+						<Ionicons
+							name="person-outline"
 							color={color}
 							size={24}
 						/>
@@ -33,9 +33,9 @@ export default function HomeLayout() {
 			<Tabs.Screen
 				name="settings"
 				options={{
-					title: "Settings",
+					title: "Settings-outline",
 					tabBarIcon: ({ color }) => (
-						<MaterialIcons
+						<Ionicons
 							name="settings"
 							color={color}
 							size={24}
