@@ -1,17 +1,14 @@
-import { Text, View } from "react-native";
-import { Link } from "expo-router";
+import { Text, View, ScrollView } from "react-native";
+import Post from "@/components/post";
 
 export default function Index() {
 	return (
-		<View
-			style={{
-				flex: 1,
-				justifyContent: "center",
-				alignItems: "center",
-			}}>
-			<Text style={{ fontSize: 24, fontWeight: "bold" }}>Home</Text>
-
-            <Link href="/post/123">Post 123</Link>
-		</View>
+		<ScrollView>
+			<Post />
+			<Post />
+			<Post />
+			<Post />
+			<Post />
+		</ScrollView>
 	);
 }
