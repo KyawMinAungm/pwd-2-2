@@ -1,6 +1,6 @@
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { PostType } from "@/types/global";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Post({ post }: { post: PostType }) {
 	return (
@@ -54,8 +54,8 @@ export default function Post({ post }: { post: PostType }) {
 					}}>
 					<TouchableOpacity>
 						<Ionicons
-							name="chatbubbles"
-							color="green"
+							name="chatbubbles-outline"
+							color="grey"
 							size={28}
 						/>
 					</TouchableOpacity>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderBottomColor: "#cccccc80",
 		paddingHorizontal: 12,
-        paddingVertical: 16,
+		paddingVertical: 16,
 		backgroundColor: "white",
 	},
 	cardContent: {
@@ -81,9 +81,9 @@ const styles = StyleSheet.create({
 		gap: 10,
 	},
 	avatar: {
-		width: 52,
-		height: 52,
-		borderRadius: 52,
+		width: 58,
+		height: 58,
+		borderRadius: 58,
 		backgroundColor: "green",
 	},
 });

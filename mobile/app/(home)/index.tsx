@@ -1,11 +1,11 @@
-import { Text, View, ScrollView } from "react-native";
 import Post from "@/components/post";
+import { ScrollView, Text, View } from "react-native";
 
-import { useQuery } from "@tanstack/react-query";
 import type { PostType } from "@/types/global";
+import { useQuery } from "@tanstack/react-query";
 
 async function fetchPosts(): Promise<PostType[]> {
-	const res = await fetch("http://192.168.1.26:8800/posts");
+	const res = await fetch("http://localhost:8800/posts");
 	return res.json();
 }
 
