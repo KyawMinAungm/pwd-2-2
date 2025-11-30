@@ -7,14 +7,29 @@ const prisma = new PrismaClient();
 const auth = require("../middlewares/auth");
 
 router.get("/", async (req, res) => {
-	const posts = await prisma.post.findMany({
+	const hasUserId = typeof req.query.userId === "string";
+	const queryOptions = {
 		orderBy: { id: "desc" },
-		take: 20,
 		include: {
 			user: true,
 			comments: true,
+			likes: true,
 		},
-	});
+	};
+
+	if (hasUserId) {
+		const userId = Number(req.query.userId);
+
+		if (!Number.isInteger(userId)) {
+			return res.status(400).json({ msg: "Invalid user id" });
+		}
+
+		queryOptions.where = { userId };
+	} else {
+		queryOptions.take = 20;
+	}
+
+	const posts = await prisma.post.findMany(queryOptions);
 
 	res.json(posts);
 });
@@ -33,6 +48,7 @@ router.get("/:id", async (req, res) => {
                     user: true,
                 }
             },
+            likes: true,
 		},
 	});
 
@@ -102,6 +118,32 @@ router.post("/:id/comments", auth, async (req, res) => {
 		console.error("Error creating comment", error);
 		return res.status(500).json({ msg: "Unable to create comment" });
 	}
+});
+
+router.post("/:id/like", auth, async (req, res) => {
+    const id = Number(req.params.id);
+
+    const like = await prisma.like.create({
+        data: {
+            userId: req.user.id,
+            postId: id,
+        },
+    });
+
+    return res.status(201).json(like);
+});
+
+router.delete("/:id/unlike", auth, async (req, res) => {
+    const id = Number(req.params.id);
+    
+    await prisma.like.deleteMany({
+        where: {
+            userId: req.user.id,
+            postId: id,
+        },
+    });
+
+    return res.status(200).json({ msg: "Unlike successful" });
 });
 
 module.exports = router;

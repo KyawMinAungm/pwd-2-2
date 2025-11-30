@@ -49,10 +49,10 @@ export default function HomeLayout() {
 			<Tabs.Screen
 				name="settings"
 				options={{
-					title: "Settings-outline",
+					title: "Settings",
 					tabBarIcon: ({ color }) => (
 						<Ionicons
-							name="settings"
+							name="settings-outline"
 							color={color}
 							size={24}
 						/>

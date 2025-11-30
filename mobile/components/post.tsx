@@ -3,12 +3,18 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useRouter } from "expo-router";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQueryClient } from "@tanstack/react-query";
+import { useApp } from "./app-provider";
+
 type PostProps = {
 	post: PostType;
 	enableNavigation?: boolean;
 };
 
 export default function Post({ post, enableNavigation = true }: PostProps) {
+    const queryClient = useQueryClient();
+    const { auth } = useApp();
 	const router = useRouter();
 
 	const handleNavigate = () => {
@@ -19,6 +25,54 @@ export default function Post({ post, enableNavigation = true }: PostProps) {
 		router.push(`/post/${post.id}`);
 	};
 
+	const handleOpenProfile = () => {
+		router.push({
+			pathname: "/(home)/profile",
+			params: {
+				userId: String(post.user.id),
+			},
+		});
+	};
+
+    const like = async () => {
+        const token = await AsyncStorage.getItem("token");
+        if (token) {
+            await fetch(
+				`http://localhost:8800/posts/${post.id}/like`,
+				{
+					method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            queryClient.invalidateQueries({ queryKey: ["posts"] });
+            queryClient.invalidateQueries({ queryKey: ["post"] });
+            queryClient.invalidateQueries({ queryKey: ["profile-posts"] });
+        }
+    };
+
+    const unlike = async () => {
+		const token = await AsyncStorage.getItem("token");
+		if (token) {
+			await fetch(`http://localhost:8800/posts/${post.id}/unlike`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			queryClient.invalidateQueries({ queryKey: ["posts"] });
+			queryClient.invalidateQueries({ queryKey: ["post"] });
+			queryClient.invalidateQueries({ queryKey: ["profile-posts"] });
+		}
+	};
+
+    const isLiked = post.likes?.some(like => like.userId === auth?.id);
+
 	return (
 		<TouchableOpacity
 			activeOpacity={enableNavigation ? 0.7 : 1}
@@ -28,12 +82,12 @@ export default function Post({ post, enableNavigation = true }: PostProps) {
 				<View style={styles.avatar}></View>
 				<View style={{ flexShrink: 1 }}>
 					<View>
-						<Text style={{ fontSize: 21 }}>{post.user.name}</Text>
+						<TouchableOpacity onPress={handleOpenProfile}>
+							<Text style={styles.userName}>{post.user.name}</Text>
+						</TouchableOpacity>
 					</View>
 					<View>
-						<Text style={{ color: "green" }}>
-							A few seconds agao
-						</Text>
+						<Text style={{ color: "green" }}>A few seconds ago</Text>
 					</View>
 					<View style={{ marginTop: 5 }}>
 						<Text style={{ fontSize: 16 }}>
@@ -54,15 +108,25 @@ export default function Post({ post, enableNavigation = true }: PostProps) {
 						gap: 5,
 						alignItems: "center",
 					}}>
+					{isLiked ? (
+						<TouchableOpacity onPress={unlike}>
+							<Ionicons
+								name="heart"
+								color="red"
+								size={28}
+							/>
+						</TouchableOpacity>
+					) : (
+						<TouchableOpacity onPress={like}>
+							<Ionicons
+								name="heart-outline"
+								color="red"
+								size={28}
+							/>
+						</TouchableOpacity>
+					)}
 					<TouchableOpacity>
-						<Ionicons
-							name="heart-outline"
-							color="red"
-							size={28}
-						/>
-					</TouchableOpacity>
-					<TouchableOpacity>
-						<Text>5</Text>
+						<Text>{post.likes?.length || 0}</Text>
 					</TouchableOpacity>
 				</View>
 				<View
@@ -98,6 +162,11 @@ const styles = StyleSheet.create({
 	cardContent: {
 		flexDirection: "row",
 		gap: 10,
+	},
+	userName: {
+		fontSize: 21,
+		fontWeight: "600",
+		color: "#2563eb",
 	},
 	avatar: {
 		width: 58,

@@ -25,6 +25,30 @@ router.get("/verify", auth, async (req, res) => {
     res.json(user);
 });
 
+router.get("/:id", async (req, res) => {
+	const id = Number(req.params.id);
+
+	if (!Number.isInteger(id)) {
+		return res.status(400).json({ msg: "Invalid user id" });
+	}
+
+	const user = await prisma.user.findUnique({
+		where: { id },
+		select: {
+			id: true,
+			name: true,
+			username: true,
+			bio: true,
+		},
+	});
+
+	if (!user) {
+		return res.status(404).json({ msg: "User not found" });
+	}
+
+	res.json(user);
+});
+
 router.post("/", async (req, res) => {
     const name = req.body?.name;
     const username = req.body?.username;

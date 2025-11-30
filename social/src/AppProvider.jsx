@@ -11,6 +11,7 @@ import Posts from "./pages/Posts";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Show from "./pages/Show";
+import Profile from "./pages/Profile";
 
 const AppContext = createContext();
 
@@ -36,6 +37,10 @@ let router = createBrowserRouter([
 			{
 				path: "/show/:id",
 				Component: Show,
+			},
+			{
+				path: "/profile",
+				Component: Profile,
 			},
 		],
 	},

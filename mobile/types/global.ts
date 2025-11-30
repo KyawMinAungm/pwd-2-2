@@ -16,4 +16,11 @@ export type PostType = {
     content: string;
     user: UserType;
     comments: CommentType[];
+    likes: LikeType[];
+}
+
+export type LikeType = {
+    id: number;
+    userId: number;
+    postId: number;
 }

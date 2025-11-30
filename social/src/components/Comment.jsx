@@ -22,7 +22,7 @@ export default function Comment({ comment }) {
 					</Typography>
 					<Typography
 						sx={{ mt: 1 }}
-						onClick={() => navigate("/show/123")}>
+						onClick={() => navigate(`/show/${comment.postId}`)}>
 						{comment.content}
 					</Typography>
 				</Box>
