@@ -1,5 +1,6 @@
-import AppProvider from "@/components/app-provider";
 import { Stack } from "expo-router";
+
+import AppProvider from "@/components/app-provider";
 
 export default function RootLayout() {
 	return (
@@ -16,6 +17,13 @@ export default function RootLayout() {
 					name="post/[id]"
 					options={{
 						title: "Post Detail",
+					}}
+				/>
+				<Stack.Screen
+					name="post/new"
+					options={{
+						title: "New Post",
+                        // presentation: "modal",
 					}}
 				/>
 			</Stack>

@@ -1,10 +1,29 @@
 import { PostType } from "@/types/global";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useRouter } from "expo-router";
 
-export default function Post({ post }: { post: PostType }) {
+type PostProps = {
+	post: PostType;
+	enableNavigation?: boolean;
+};
+
+export default function Post({ post, enableNavigation = true }: PostProps) {
+	const router = useRouter();
+
+	const handleNavigate = () => {
+		if (!enableNavigation) {
+			return;
+		}
+
+		router.push(`/post/${post.id}`);
+	};
+
 	return (
-		<View style={styles.card}>
+		<TouchableOpacity
+			activeOpacity={enableNavigation ? 0.7 : 1}
+			onPress={handleNavigate}
+			style={styles.card}>
 			<View style={styles.cardContent}>
 				<View style={styles.avatar}></View>
 				<View style={{ flexShrink: 1 }}>
@@ -64,7 +83,7 @@ export default function Post({ post }: { post: PostType }) {
 					</TouchableOpacity>
 				</View>
 			</View>
-		</View>
+		</TouchableOpacity>
 	);
 }
 

@@ -11,7 +11,7 @@ function auth(req, res, next) {
 	const token = authorization?.split(" ")[1];
 
     if(!token) {
-        res.status(401).json({ msg: "access token is required" });
+        return res.status(401).json({ msg: "access token is required" });
     }
 
 	try {
@@ -21,7 +21,7 @@ function auth(req, res, next) {
             next();
         }
 	} catch (e) {
-		res.status(401).json({ msg: "Invalid token" });
+		return res.status(401).json({ msg: "Invalid token" });
 	}
 }
 
